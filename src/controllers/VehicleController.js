@@ -2,17 +2,26 @@ const connection = require('../database/connection');
 
 module.exports = {
     async index(request, response) {
-        const { page = 1, plate } = request.query;
+        const { page, plate } = request.query;
         const user_id = request.headers.authorization;
 
         const [count] = await connection('vehicle').where('vehicle.user_id', user_id).count();
 
-        const vehicle = await connection('vehicle')
-            .where('vehicle.user_id', user_id)
-            .andWhere('vehicle.plate', 'like' , `%${plate || ''}%`)
-            .limit(5)
-            .offset((page - 1) * 5)
-            .select('*');
+        let vehicle;
+
+        if (page === undefined) {
+            vehicle = await connection('vehicle')
+                .where('vehicle.user_id', user_id)
+                .andWhere('vehicle.plate', 'like' , `%${plate || ''}%`)
+                .select('*');
+        } else {
+            vehicle = await connection('vehicle')
+                .where('vehicle.user_id', user_id)
+                .andWhere('vehicle.plate', 'like' , `%${plate || ''}%`)
+                .limit(5)
+                .offset((page - 1) * 5)
+                .select('*');
+        }
 
         response.header('X-Total-Count', count['count(*)']);
 
