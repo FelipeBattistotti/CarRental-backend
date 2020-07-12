@@ -52,7 +52,7 @@ routes.get('/vehicle', celebrate({
  */
 routes.post('/vehicle', celebrate({
     [Segments.BODY]: Joi.object().keys({
-        plate: Joi.string().required().min(7),
+        plate: Joi.string().required().min(7).max(7),
     })
 }), VehicleController.create);
 
