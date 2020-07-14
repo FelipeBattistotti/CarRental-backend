@@ -17,6 +17,7 @@ routes.get('/user', UserController.index);
  */
 routes.post('/user', celebrate({
     [Segments.BODY]: Joi.object().keys({
+        name: Joi.string().required().max(50),
         email: Joi.string().required().email(),
         pwd: Joi.string().required(),
     })

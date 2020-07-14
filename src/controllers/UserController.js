@@ -14,7 +14,7 @@ module.exports = {
 
     async create(request, response) {
 
-        const { email } = request.body;
+        const { name, email } = request.body;
 
         const id = generateUniqueId(); // generates unique ID for the user
 
@@ -22,6 +22,7 @@ module.exports = {
 
         await connection('user').insert({
             id,
+            name,
             email,
             pwd,
         });
