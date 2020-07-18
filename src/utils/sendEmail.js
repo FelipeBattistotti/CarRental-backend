@@ -2,6 +2,11 @@ const nodemailer = require('nodemailer');
 require('dotenv').config()
 
 module.exports = async function sendEmail(email) {
+
+    if (process.env.MAIL_HOST === undefined || process.env.MAIL_HOST === '') {
+        return;
+    }
+
     const transporter = nodemailer.createTransport({
         host: process.env.MAIL_HOST,
         port: process.env.MAIL_PORT,
